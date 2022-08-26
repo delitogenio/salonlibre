@@ -4,17 +4,16 @@ from espacio import Espacio
 class Laboratorio(Espacio):
 
     def __init__(self):
-        self.edificio=''
-        self.nombre=''
+        super().__init__()
 
     def get_edificio(self):
-        return self.edificio
+        super().get_edificio()
 
     def get_nombre(self):
-        return self.nombre
+        super().get_nombre()
 
     def set_edificio(self, x):
-        self.edificio = x
+        super().set_edificio(x)
 
     def set_nombre(self, x):
-        self.nombre = x
+        super().set_nombre(x)

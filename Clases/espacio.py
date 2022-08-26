@@ -6,9 +6,9 @@ class Espacio(ABC):
   nombre=None
 
   @abstractmethod
-  def __init__(self):
-   self.edificio=''
-   self.nombre=''
+  def __init__(self, edicio, nombre):
+   self.edificio = edicio
+   self.nombre = nombre
   
   def get_edificio(self):
     return self.edificio
@@ -22,5 +22,5 @@ class Espacio(ABC):
   def set_nombre(self,x):
     self.nombre=x
 
-  edificio= property(get_edificio,set_edificio)
+
     
