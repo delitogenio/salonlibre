@@ -3,14 +3,28 @@ from Clases.salon import Salon
 
 
 class Asignacion():
-    asignacion = {"materia": "salon"}
+    codigo= None
+    materia = Materia()
+    salon = Salon()
 
-    def materia_builder(self,nombreMateria,tiempoentrada,tiemposalida,profesor):
-        materia = Materia(nombreMateria,tiempoentrada,tiemposalida,profesor)
-        return materia
+    def __init__(self, codigo,materia, salon):
+        self.codigo=codigo
+        self.materia=materia
+        self.salon=salon
 
-    def salon_builder(self,edificio, nombre):
-        salon = Salon(edificio, nombre)
-        return salon
+    def set_asignacion(self,nombreMateria,tiempoentrada,tiemposalida,profesor,edifcio,nombreespacio):
+        self.materia.set_nombreMateria(nombreMateria)
+        self.materia.set_tiempoentrada(tiempoentrada)
+        self.materia.settiemposalida(tiemposalida)
+        self.materia.set_profesor(profesor)
+        self.salon.set_edificio(edifcio)
+        self.salon.set_nombre(nombreespacio)
+
+    def get_codigo(self):
+        return self.codigo
+
+
+
+
 
 

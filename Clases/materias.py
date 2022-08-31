@@ -1,17 +1,17 @@
 from datetime import *
 class Materia:
     nombreMateria=None
-    tiempoentrada=datetime(0,0,0,0,0,0,0)
-    tiemposalida=datetime(0,0,0,0,0,0,0)
+    tiempoentrada=datetime(1990,6,22,0,0,0,0)
+    tiemposalida=datetime(1900,6,23,0,0,0,0)
     horaSalida=None
     minutoSalida=None
     profesor=None
 
-    def __init__(self,nombreMateria,tiempoentrada,tiemposalida,profesor):
-        self.nombreMateria= nombreMateria
-        self.tiempoentrada=tiempoentrada
-        self.tiemposalida=tiemposalida
-        self.profesor=profesor
+    # def __init__(self,nombreMateria,tiempoentrada,tiemposalida,profesor):
+    #     self.nombreMateria= nombreMateria
+    #     self.tiempoentrada=tiempoentrada
+    #     self.tiemposalida=tiemposalida
+    #     self.profesor=profesor
 
     def get_nombreMateria(self):
         return self.nombreMateria
