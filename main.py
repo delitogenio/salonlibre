@@ -1,6 +1,9 @@
 from Metodos.asignacion import Asignacion
 from Clases.materias import Materia
 from Clases.salon import Salon
+from datetime import *
+
+
 
 
 def run_test():
@@ -14,11 +17,11 @@ def run_test():
     materia = Materia()
     salon = Salon()
 
-    asignacion = Asignacion(1541, materia, salon)
-    asignacion.set_asignacion(nombreMateria, tiempoentrada, tiemposalida, profesor, edifcio, nombreespacio)
+    asignacion = Asignacion(1541, materia, salon,tiempoentrada=tiempoentrada,tiemposalida=tiemposalida)
+    asignacion.set_asignacion(nombreMateria, profesor, edifcio, nombreespacio)
     print("El codigo de la asignacion es "+ str(asignacion.get_codigo()))
-    print("La hora de entrada es "+ asignacion.materia.get_tiempoentrada())
-    print("La hora de salida es " + asignacion.materia.get_tiemposalida())
+    print("La hora de entrada es "+ asignacion.get_horaentrada())
+    print("La hora de salida es " + asignacion.get_horasalida())
     print("El profesor asignado es " + asignacion.materia.get_profesor())
     print("El salon es " + asignacion.salon.get_nombre() + " en el edificio "+ asignacion.salon.get_edificio() )
 
