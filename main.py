@@ -1,12 +1,12 @@
-from Metodos.asignacion import Asignacion
+from Clases.asignacion import Asignacion
 from Clases.materias import Materia
 from Clases.salon import Salon
-from datetime import *
-
 
 
 
 def run_test():
+
+
     edifcio = '201'
     nombreespacio = 'Harwdare Libre'
     nombreMateria = 'POO'
