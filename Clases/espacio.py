@@ -18,4 +18,6 @@ class Espacio(ABC):
     self.nombre=x
 
 
+
+
     

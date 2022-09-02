@@ -1,7 +1,7 @@
-from espacio import Espacio
+from Clases import espacio
 
 
-class Laboratorio(Espacio):
+class Laboratorio(espacio.Espacio):
     pass
 
 
