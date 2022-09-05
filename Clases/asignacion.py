@@ -72,9 +72,28 @@ class Asignacion():
                  self.salon.get_edificio(), self.tiempoentrada, self.tiemposalida, self.tipoEspacio))
             self.conn.commit()
             print("La asignacion ha sido realizada con los siguientes parametros: \n" +
-                  "Salon: " + self.salon.get_nombre() + "\n"+
-                  "Materia: " + self.materia.get_nombreMateria() +"\n"+
-                  "Hora Entrada: " + self.get_horaentrada() +"\n"+
+                  "Salon: " + self.salon.get_nombre() + "\n" +
+                  "Materia: " + self.materia.get_nombreMateria() + "\n" +
+                  "Hora Entrada: " + self.get_horaentrada() + "\n" +
                   "Hora Salida: " + self.get_horasalida())
         else:
             print("Asignacion fallida")
+
+    def eliminarasignacionmateria(self, parametro, seleccion):
+        self.cur.execute("SELECT nombreMateria,nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
+        for (nombreMateria, nombreEspacio, horaEntrada, horaSalida) in self.cur:
+            print(str(nombreMateria) + " " + str(nombreEspacio) + " ")
+            if seleccion == 1:
+                if parametro == nombreMateria:
+                    # self.cur.execute("SELECT nombreMateria FROM Asignacion")
+                    self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
+                    self.conn.commit()
+                    break
+            elif seleccion == 2:
+                if parametro == nombreMateria:
+                    # self.cur.execute("SELECT nombreMateria FROM Asignacion")
+                    self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
+                    self.conn.commit()
+                    break
+            else:
+                break
