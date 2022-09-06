@@ -1,9 +1,9 @@
 import datetime
 
-from Clases.laboratorio import Laboratorio
-from Metodos.DBConnection import connection
-from Clases.materias import Materia
-from Clases.salon import Salon
+from flaskr.Clases.laboratorio import Laboratorio
+from flaskr.Metodos.DBConnection import connection
+from flaskr.Clases.materias import Materia
+from flaskr.Clases.salon import Salon
 
 
 class Asignacion():

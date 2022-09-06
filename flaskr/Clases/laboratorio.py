@@ -1,4 +1,4 @@
-from Clases import espacio
+from flaskr.Clases import espacio
 
 
 class Laboratorio(espacio.Espacio):
