@@ -5,7 +5,8 @@ import abc
 class CrearAsignacion(abc.ABC):
 
     @abc.abstractmethod
-    def crearasignacion(self):
+    def crearasignacion(self, nombremateria, profesor, edifcio, nombreespacio, tiempoentrada,
+                        tiemposalida, tipoespacio):
         pass
 
 class EliminarAsignacion(abc.ABC):
@@ -25,6 +26,11 @@ class ModificarAsignacion(abc.ABC):
 class VerAsignacion(abc.ABC):
     @abc.abstractmethod
     def verasignacion(self,parametro):
+        pass
+
+class SolicitarAsignacion(abc.ABC):
+    @abc.abstractmethod
+    def solicitarasignacion(self):
         pass
 
 

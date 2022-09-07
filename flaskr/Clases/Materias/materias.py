@@ -2,6 +2,10 @@
 class Materia:
     nombreMateria=None
     profesor=None
+
+    def __init__(self):
+        pass
+
     def get_nombreMateria(self):
         return self.nombreMateria
 

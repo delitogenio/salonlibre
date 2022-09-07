@@ -6,7 +6,7 @@ from flaskr.Clases.Materias.materias import Materia
 from flaskr.Clases.Espacios.salon import Salon
 
 
-class AsignacionTmp:
+class AsignacionClase:
     codigo = None
     materia = Materia()
     salon = Salon()
@@ -16,24 +16,25 @@ class AsignacionTmp:
     tiemposalida = None
     conn = connection()
     cur = conn.cursor()
+    parametro=None
 
-    def __init__(self, codigo, materia, salon, tiempoentrada, tiemposalida, tipoespacio):
-        self.codigo = codigo
-        self.materia = materia
-        self.salon = salon
-        self.tiempoentrada = datetime.datetime.strptime(tiempoentrada, '%Y-%m-%d %H:%M:%S')
-        self.tiemposalida = datetime.datetime.strptime(tiemposalida, '%Y-%m-%d %H:%M:%S')
-        self.tipoEspacio = tipoespacio
+    def __int__(self):
+        pass
 
-    def set_asignacion(self, nombreMateria, profesor, edifcio, nombreespacio):
+    def set_asignacion(self, nombreMateria, profesor, edifcio, nombreespacio,horaentrada,horasalida,tipoespacio):
+        self.tiempoentrada = datetime.datetime.strptime(horaentrada, '%Y-%m-%d %H:%M:%S')
+        self.tiemposalida = datetime.datetime.strptime(horasalida, '%Y-%m-%d %H:%M:%S')
         self.materia.set_nombreMateria(nombreMateria)
         self.materia.set_profesor(profesor)
-        if (self.tipoEspacio == 'Salon'):
+        if (tipoespacio == 1):
             self.salon.set_edificio(edifcio)
             self.salon.set_nombre(nombreespacio)
         else:
             self.lab.set_nombre(nombreespacio)
             self.lab.set_edificio(edifcio)
+
+    def set_parametro(self,x):
+        self.parametro =x;
 
     def get_codigo(self):
         return self.codigo
@@ -53,10 +54,10 @@ class AsignacionTmp:
         return self.tiemposalida
 
     def set_tiempoentrada(self, x):
-        self.tiempoentrada = x
+        self.tiempoentrada = datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
 
     def settiemposalida(self, x):
-        self.tiemposalida = x
+        self.tiemposalida = datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
 
     def crearasignacion(self):
         flagsalon = True
@@ -98,11 +99,11 @@ class AsignacionTmp:
             else:
                 break
 
-    def verasignacion(self,parametro):
+    def verasignacion(self):
         self.cur.execute("SELECT * FROM Asignacion")
         print()
         for (nombreMateria) in self.cur:
-            if parametro in nombreMateria:
+            if self.parametro in nombreMateria:
                 print("La asignacion es " + str (nombreMateria[1]))
             else:"La asignacion no existe"
 

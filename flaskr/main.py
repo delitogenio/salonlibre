@@ -1,9 +1,9 @@
-from flaskr.Clases.asignaciontmp import AsignacionTmp
-from flaskr.Clases.Materias.materias import Materia
-from flaskr.Clases.Espacios.salon import Salon
-from flask import Flask, request
+from flask import Flask, request, render_template, redirect
 import os
 import logging, logging.config
+
+from Metodos.Login import Login
+
 logging.basicConfig(level=logging.DEBUG,
                     format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
                     handlers=[
@@ -15,9 +15,6 @@ logging.basicConfig(level=logging.DEBUG,
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    # UPLOAD_FOLDER = 'flaskr/Files'
-    # ALLOWED_EXTENSIONS = {'txt', 'log', 'csv', 'xls'}
-    # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
@@ -36,27 +33,13 @@ def create_app(test_config=None):
     @app.route('/')
     def hello():
         logging.info(request.url + ' ' + request.method)
-        return 0
+        return redirect ('/login/login')
 
+    app.register_blueprint(Login.bplogin)
     if __name__ == "__main__":
         app.run(debug=True)
 
     return app
-def run_test():
-    edifcio = 'B'
-    nombreespacio = '210'
-    nombreMateria = 'Ingenieria de Software'
-    tiempoentrada = '2022-09-03 15:20:59'
-    tiemposalida = '2022-09-03 17:30:04'
-    profesor = 'Fernando Velazco'
-    tipoEspacio = 'Salon'
 
-    materia = Materia()
-    salon = Salon()
+create_app()
 
-    asignacion = AsignacionTmp(1541, materia, salon, tiempoentrada, tiemposalida, tipoEspacio)
-    asignacion.set_asignacion(nombreMateria, profesor, edifcio, nombreespacio)
-    asignacion.verasignacion('Ingenieria de Software')
-    # asignacion.crearasignacion()
-    # asignacion.eliminarasignacionmateria("Programacion")
-run_test()
