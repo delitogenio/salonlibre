@@ -1,0 +1,32 @@
+{%extends "layout.html"%}
+
+{% block head %}
+<meta charset="utf-8" />
+<title>FileDataExtraction</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}" />
+{%endblock%}
+
+{% block content %}
+
+<form  method="POST" enctype="multipart/form-data">
+    <h1>Ingrese los datos</h1>
+    <div class="datoslogin">
+        <label for="user" >Usuario</label>
+        <input type="text" name="user" id="user" required>
+        <br>
+        <label for="password">Contraseña</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <label for="lista_tipos_usuarios">Elija el tipo de usuario</label>
+        <select class="lista_tipos_usuarios" name="lista_tipos_usuario" id="lista_tipos_usuarios" required>
+            <option value="1">Administrativo</option>
+            <option value="2">Estudiante</option>
+            <option value="3">Profesoor</option>
+        </select>
+        <input type="submit" enctype="multipart/form-data" value="Crear usuario">
+    </div>
+
+
+</form>
+
+{% endblock %}
