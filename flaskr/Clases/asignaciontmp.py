@@ -1,12 +1,12 @@
 import datetime
 
-from flaskr.Clases.laboratorio import Laboratorio
+from flaskr.Clases.Espacios.laboratorio import Laboratorio
 from flaskr.Metodos.DBConnection import connection
-from flaskr.Clases.materias import Materia
-from flaskr.Clases.salon import Salon
+from flaskr.Clases.Materias.materias import Materia
+from flaskr.Clases.Espacios.salon import Salon
 
 
-class Asignacion():
+class AsignacionTmp:
     codigo = None
     materia = Materia()
     salon = Salon()
@@ -77,7 +77,7 @@ class Asignacion():
                   "Hora Entrada: " + self.get_horaentrada() + "\n" +
                   "Hora Salida: " + self.get_horasalida())
         else:
-            print("Asignacion fallida")
+            print("AsignacionTmp fallida")
 
     def eliminarasignacionmateria(self, parametro, seleccion):
         self.cur.execute("SELECT nombreMateria,nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
@@ -85,15 +85,26 @@ class Asignacion():
             print(str(nombreMateria) + " " + str(nombreEspacio) + " ")
             if seleccion == 1:
                 if parametro == nombreMateria:
-                    # self.cur.execute("SELECT nombreMateria FROM Asignacion")
+                    # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
                     self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
                     self.conn.commit()
                     break
             elif seleccion == 2:
                 if parametro == nombreMateria:
-                    # self.cur.execute("SELECT nombreMateria FROM Asignacion")
+                    # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
                     self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
                     self.conn.commit()
                     break
             else:
                 break
+
+    def verasignacion(self,parametro):
+        self.cur.execute("SELECT * FROM Asignacion")
+        print()
+        for (nombreMateria) in self.cur:
+            if parametro in nombreMateria:
+                print("La asignacion es " + str (nombreMateria[1]))
+            else:"La asignacion no existe"
+
+
+

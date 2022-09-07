@@ -1,7 +1,7 @@
-from flaskr.Clases.asignacion import Asignacion
-from flaskr.Clases.materias import Materia
-from flaskr.Clases.salon import Salon
-from flask import Flask, render_template, request
+from flaskr.Clases.asignaciontmp import AsignacionTmp
+from flaskr.Clases.Materias.materias import Materia
+from flaskr.Clases.Espacios.salon import Salon
+from flask import Flask, request
 import os
 import logging, logging.config
 logging.basicConfig(level=logging.DEBUG,
@@ -54,8 +54,9 @@ def run_test():
     materia = Materia()
     salon = Salon()
 
-    asignacion = Asignacion(1541, materia, salon, tiempoentrada, tiemposalida,tipoEspacio)
+    asignacion = AsignacionTmp(1541, materia, salon, tiempoentrada, tiemposalida, tipoEspacio)
     asignacion.set_asignacion(nombreMateria, profesor, edifcio, nombreespacio)
+    asignacion.verasignacion('Ingenieria de Software')
     # asignacion.crearasignacion()
     # asignacion.eliminarasignacionmateria("Programacion")
 run_test()

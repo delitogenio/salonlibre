@@ -1,4 +1,4 @@
-from flaskr.Clases import espacio
+from flaskr.Clases.Espacios import espacio
 
 
 class Salon(espacio.Espacio):
