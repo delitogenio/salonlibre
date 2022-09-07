@@ -33,7 +33,7 @@ def create_app(test_config=None):
     @app.route('/')
     def hello():
         logging.info(request.url + ' ' + request.method)
-        return redirect ('/login/login')
+        return redirect ('/login')
 
     app.register_blueprint(Login.bplogin)
     if __name__ == "__main__":
