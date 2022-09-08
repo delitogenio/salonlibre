@@ -26,7 +26,7 @@ class Login:
                     if self.tipo_usuario == 1:
                         return 'admintemplate.html'
                     elif self.tipo_usuario == 2:
-                        return ' estudiantetemplate.html'
+                        return 'estudiantetemplate.html'
                     elif self.tipo_usuario == 3:
                         return 'profesortemplate.html'
                     else:
@@ -35,27 +35,37 @@ class Login:
     @bplogin.route('/', methods=('GET', 'POST'))
     def __login():
         logging.info(request.url + ' ' + request.method)
-        login = Login()
-        result = login.login()
-        if result == '14':
-            flash('Credenciales no validas', 'error')
+        if request.method == 'POST':
+            login = Login()
+            result = login.login()
+            if result == '14':
+                flash('Credenciales no validas', 'error')
+                return render_template('login.html')
+            else:return render_template(result)
+        else:
             return render_template('login.html')
-        else:return render_template(result)
-    def create_login(self, tipo_usuario):
+    def create_login(self):
+        conn = connection()
+        cur = conn.cursor()
         self.nombreUsuario = request.form["user"]
         self.contrasena = request.form["password"]
-        self.tipo_usuario = int(tipo_usuario)
+        cur.execute("Select * from Tipos_Usuario")
+        for Correo_Institucional,Tipo_Usuario in cur:
+            if self.nombreUsuario == Correo_Institucional:
+                self.tipo_usuario = Tipo_Usuario
+                break
+            else: return False
+
         rta_pregunta1 = request.form["pregunta1"]
         rta_pregunta2 = request.form["pregunta2"]
         rta_pregunta3 = request.form["pregunta3"]
-        conn = connection()
-        cur = conn.cursor()
         flag = True
         cur.execute("SELECT Usuario,Contrasena FROM Usuarios")
         for Usuario, Contrasena in cur:
             if Usuario == self.nombreUsuario:
                 flag = False
-                return flash('El usuario ya esta creado', 'error')
+                flash('El usuario ya esta creado', 'error')
+                return False
         if flag:
             password_encripted = generate_password_hash(self.contrasena)
             rta1_encrypted = generate_password_hash(rta_pregunta1)
@@ -67,14 +77,22 @@ class Login:
                  rta1_encrypted, rta2_encrypted, rta3_encrypted))
             conn.commit()
             flash('Usuario creado correctamente', 'message')
+            return True
+
     @bplogin.route('/createlogin', methods=('GET', 'POST'))
     def __create_login():
         if request.method == 'GET':
             return render_template('logincreation.html')
         else:
             login = Login()
-            login.create_login(request.form['lista_tipos_usuario'])
-            return redirect('/login')
+            bol = login.create_login()
+            if bol:
+                return redirect('/login')
+            else:
+                flash('El correo no se encuentra en la base de datos, comuniquese con registro', 'error')
+                return redirect('login/createlogin')
+
+
     def reset_password_initial(self):
         nombreUsuario = request.form["usuario"]
         session['usuario'] = nombreUsuario
