@@ -1,8 +1,9 @@
 import logging
 
-from flask import Blueprint, render_template, request, flash, redirect, session
+from flask import Blueprint, render_template, request, flash, redirect, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from Clases.Usuarios.Estudiante import Estudiante
 from Metodos.DBConnection import connection
 
 
@@ -26,7 +27,7 @@ class Login:
                     if self.tipo_usuario == 1:
                         return 'admintemplate.html'
                     elif self.tipo_usuario == 2:
-                        return 'estudiantetemplate.html'
+                        return '/estudiante'
                     elif self.tipo_usuario == 3:
                         return 'profesortemplate.html'
                     else:
@@ -41,10 +42,11 @@ class Login:
             if result == '14':
                 flash('Credenciales no validas', 'error')
                 return render_template('login.html')
-            else:return render_template(result)
+            else:return redirect(result)
         else:
             return render_template('login.html')
     def create_login(self):
+        flag = True
         conn = connection()
         cur = conn.cursor()
         self.nombreUsuario = request.form["user"]
@@ -53,13 +55,14 @@ class Login:
         for Correo_Institucional,Tipo_Usuario in cur:
             if self.nombreUsuario == Correo_Institucional:
                 self.tipo_usuario = Tipo_Usuario
+                flag =True
                 break
-            else: return False
+            else: flag  = False
 
         rta_pregunta1 = request.form["pregunta1"]
         rta_pregunta2 = request.form["pregunta2"]
         rta_pregunta3 = request.form["pregunta3"]
-        flag = True
+
         cur.execute("SELECT Usuario,Contrasena FROM Usuarios")
         for Usuario, Contrasena in cur:
             if Usuario == self.nombreUsuario:
@@ -91,8 +94,6 @@ class Login:
             else:
                 flash('El correo no se encuentra en la base de datos, comuniquese con registro', 'error')
                 return redirect('login/createlogin')
-
-
     def reset_password_initial(self):
         nombreUsuario = request.form["usuario"]
         session['usuario'] = nombreUsuario

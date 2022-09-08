@@ -99,13 +99,30 @@ class AsignacionClase:
             else:
                 break
 
-    def verasignacion(self):
-        self.cur.execute("SELECT * FROM Asignacion")
-        print()
-        for (nombreMateria) in self.cur:
-            if self.parametro in nombreMateria:
-                print("La asignacion es " + str (nombreMateria[1]))
-            else:"La asignacion no existe"
+    def verasignacion(self,columna):
+        text = None
+        resultfinal = []
+        conn = connection()
+        cur = conn.cursor()
+        cur.execute("select nombreMateria, nombreEspacio, profesor,edificio, horaEntrada, horaSalida from Asignacion")
+        for (nombreMateria, nombreEspacio, profesor,edificio, horaEntrada, horaSalida) in cur:
+            text = "Materia: "+nombreMateria + " Salon: " + nombreEspacio + " Profesor: " + profesor + " " + edificio + " Fecha de entrada: " + str(
+                horaEntrada) + " Fecha Salida:  " + str(horaSalida)
+            if columna == 'nombreMateria':
+                if nombreMateria == self.parametro:
+                    resultfinal.append(text)
+            elif columna == 'nombreEspacio':
+                if nombreEspacio == self.parametro:
+                    resultfinal.append(text)
+            elif columna == 'profesor':
+                if profesor == self.parametro:
+                    resultfinal.append(text)
+            else:
+                resultfinal.append("Busqueda no exitosa")
+        return resultfinal
+
+
+
 
 
 

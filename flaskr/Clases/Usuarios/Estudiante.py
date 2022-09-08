@@ -1,15 +1,25 @@
-from Clases.Usuarios.usuarios import Usuario
-from Metodos.asignacion import VerAsignacion
-from flaskr.Metodos.DBConnection import connection
+from flask import Blueprint, request, render_template
 from Clases.Asignaciones.asignacionClase import AsignacionClase
 
 
 
-class Estudiante (Usuario,VerAsignacion):
+class Estudiante ():
 
-    def verasignacion(self,parametro):
+    bpestudiante = Blueprint('estudianteview',__name__,url_prefix='/estudiante')
+    def verasignacion(self,parametro,columna):
         asignacion = AsignacionClase()
         asignacion.set_parametro(parametro)
-        asignacion.verasignacion()
+        return asignacion.verasignacion(columna)
+
+    @bpestudiante.route('/',methods=('GET', 'POST'))
+    def verasignacionwebapp():
+        if request.method == 'GET':
+            return render_template('estudiantetemplate.html')
+        else:
+            param = request.form['valor']
+            columna = request.form['searh_parameter']
+            est= Estudiante()
+            results = est.verasignacion(param,columna)
+        return render_template("estudiantetemplate.html",resultend = results)
 
 

@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect
 import os
 import logging, logging.config
 
+from Clases.Usuarios.Estudiante import Estudiante
 from Metodos.Login import Login
 
 logging.basicConfig(level=logging.DEBUG,
@@ -36,6 +37,7 @@ def create_app(test_config=None):
         return redirect ('/login')
 
     app.register_blueprint(Login.bplogin)
+    app.register_blueprint(Estudiante.bpestudiante)
     if __name__ == "__main__":
         app.run(debug=True)
 

@@ -7,7 +7,30 @@
 {%endblock%}
 
 {% block content %}
-
+<div class="row">
+    <div class="column">
+        <h1>Bienvenido a la aplicacion</h1>
+    </div>
+    <div class="column">
+    </div>
+    <div class="column">
+        <h2>Seleccione el parametro a buscar</h2>
+        <select name="searh_parameter" id="searh_parameter">
+            <option value="nombreMateria">Materia</option>
+            <option value="nombreEspacio">Salon</option>
+            <option value="profesor">Profesor</option>
+        </select>
+        <label for="valor" >Ingrese el valor a buscar</label>
+    <input type="text" name="valor" id="valor" title="Inserte un Email Válido" required>
+    <input type="submit" value="Ingresar" enctype="multipart/form-data">
+    </div>
+</div>
+<br>
+{% if resultend != None %}
+            {%for r in resultend%}
+                <li>{{resultend[0]}}</li>
+            {%endfor%}
+{% endif %}
 
 
 
