@@ -1,7 +1,7 @@
 import logging
-from werkzeug.security import generate_password_hash, check_password_hash
-import requests
+
 from flask import Blueprint, render_template, request, flash, redirect, session
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from Metodos.DBConnection import connection
 
@@ -32,19 +32,15 @@ class Login:
                     else:
                         return '14'
         return '14'
-
     @bplogin.route('/', methods=('GET', 'POST'))
     def __login():
-
+        logging.info(request.url + ' ' + request.method)
         login = Login()
         result = login.login()
         if result == '14':
             flash('Credenciales no validas', 'error')
             return render_template('login.html')
         else:return render_template(result)
-
-
-
     def create_login(self, tipo_usuario):
         self.nombreUsuario = request.form["user"]
         self.contrasena = request.form["password"]
@@ -71,7 +67,6 @@ class Login:
                  rta1_encrypted, rta2_encrypted, rta3_encrypted))
             conn.commit()
             flash('Usuario creado correctamente', 'message')
-
     @bplogin.route('/createlogin', methods=('GET', 'POST'))
     def __create_login():
         if request.method == 'GET':
@@ -80,7 +75,6 @@ class Login:
             login = Login()
             login.create_login(request.form['lista_tipos_usuario'])
             return redirect('/login')
-
     def reset_password_initial(self):
         nombreUsuario = request.form["usuario"]
         session['usuario'] = nombreUsuario
@@ -95,16 +89,15 @@ class Login:
                 return '/newpasswordset'
             else:
                 return '/forgotpassword'
-
     @bplogin.route('/forgotpassword', methods=('GET', 'POST'))
     def __reset_password_initial():
+        logging.info(request.url + ' ' + request.method)
         if request.method == 'POST':
             login = Login()
             result = login.reset_password_initial()
             return redirect('/login'+result)
         else:
             return render_template("forgotpassword.html")
-
     def reset_password(self):
         user= session.get('usuario',None)
         newpassword = generate_password_hash(request.form["password"])
@@ -115,9 +108,9 @@ class Login:
         conn.commit()
         flash("Contraseña cambiada correctamente","message")
         return '/login'
-
     @bplogin.route('/newpasswordset', methods=('GET', 'POST'))
     def __reset_password():
+        logging.info(request.url + ' ' + request.method)
         if request.method == 'POST':
             login = Login()
             result = login.reset_password()

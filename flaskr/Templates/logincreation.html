@@ -7,35 +7,32 @@
 {%endblock%}
 
 {% block content %}
-
-<form  method="POST" enctype="multipart/form-data">
-    <h1>Ingrese los datos</h1>
-    <div class="datoslogin">
-        <label for="user" >Usuario</label>
-        <input type="email" name="user" id="user" title="Inserte un Email Válido" required>
-        <br>
-        <label for="password">Contraseña</label>
-        <input type="password" name="password" id="password" pattern="[A-Za-z][A-Za-z0-9]*[0-9][A-Za-z0-9]*" title="Una contraseña válida es un conjuto de caracteres,
-            donde cada uno consiste de una letra mayúscula o minúscula, o un dígito. La contraseña debe empezar con una letra y contener al menor un dígito"  required>
-        <br>
-        <label for="lista_tipos_usuarios">Elija el tipo de usuario</label>
-        <select class="lista_tipos_usuarios" name="lista_tipos_usuario" id="lista_tipos_usuarios" required>
-            <option value="1">Administrativo</option>
-            <option value="2">Estudiante</option>
-            <option value="3">Profesor</option>
-        </select>
-    </div>
-    <div class="preguntas_seguridad">
-        <h2>Ingrese las repuestas a las preguntas de seguridad</h2>
-        <p>Estas se usaran para recuperar su contraseña, recuerde que estas respuestas son sensibles a mayúsculas y minúsculas</p>
-        <label for="pregunta1" >Nombre de su primera mascota</label>
-        <input type="text" name="pregunta1" id="pregunta1" required>
-        <label for="pregunta2" >Nombre de su ciudad de nacimiento</label>
-        <input type="text" name="pregunta2" id="pregunta2" required>
-        <label for="pregunta3" >¿Cual fue su primer trabajo?</label>
-        <input type="text" name="pregunta3" id="pregunta3" required>
-    </div>
-    <input type="submit" enctype="multipart/form-data" value="Crear usuario">
-</form>
+<h1>Ingrese los datos</h1>
+<div class="datoslogin">
+    <label for="user" >Usuario</label>
+    <input type="email" name="user" id="user" title="Inserte un Email Válido" required>
+    <br>
+    <label for="password">Contraseña</label>
+    <input type="password" name="password" id="password" pattern="[A-Za-z][A-Za-z0-9]*[0-9][A-Za-z0-9]*" title="Una contraseña válida es un conjuto de caracteres,
+        donde cada uno consiste de una letra mayúscula o minúscula, o un dígito. La contraseña debe empezar con una letra y contener al menor un dígito"  required>
+    <br>
+    <label for="lista_tipos_usuarios">Elija el tipo de usuario</label>
+    <select class="lista_tipos_usuarios" name="lista_tipos_usuario" id="lista_tipos_usuarios" required>
+        <option value="1">Administrativo</option>
+        <option value="2">Estudiante</option>
+        <option value="3">Profesor</option>
+    </select>
+</div>
+<div class="preguntas_seguridad">
+    <h2>Ingrese las repuestas a las preguntas de seguridad</h2>
+    <p>Estas se usaran para recuperar su contraseña, recuerde que estas respuestas son sensibles a mayúsculas y minúsculas</p>
+    <label for="pregunta1" >Nombre de su primera mascota</label>
+    <input type="text" name="pregunta1" id="pregunta1" required>
+    <label for="pregunta2" >Nombre de su ciudad de nacimiento</label>
+    <input type="text" name="pregunta2" id="pregunta2" required>
+    <label for="pregunta3" >¿Cual fue su primer trabajo?</label>
+    <input type="text" name="pregunta3" id="pregunta3" required>
+</div>
+<input type="submit" enctype="multipart/form-data" value="Crear usuario">
 
 {% endblock %}
