@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from flaskr.Clases.Espacios.laboratorio import Laboratorio
 from flaskr.Metodos.DBConnection import connection
@@ -22,16 +23,18 @@ class AsignacionClase:
         pass
 
     def set_asignacion(self, nombreMateria, profesor, edifcio, nombreespacio,horaentrada,horasalida,tipoespacio):
-        self.tiempoentrada = datetime.datetime.strptime(horaentrada, '%Y-%m-%d %H:%M:%S')
-        self.tiemposalida = datetime.datetime.strptime(horasalida, '%Y-%m-%d %H:%M:%S')
+        self.tiempoentrada = datetime.datetime.strptime(horaentrada, '%Y-%m-%dT%H:%M')
+        self.tiemposalida = datetime.datetime.strptime(horasalida, '%Y-%m-%dT%H:%M')
         self.materia.set_nombreMateria(nombreMateria)
         self.materia.set_profesor(profesor)
         if (tipoespacio == 1):
             self.salon.set_edificio(edifcio)
             self.salon.set_nombre(nombreespacio)
+            self.tipoEspacio =1
         else:
             self.lab.set_nombre(nombreespacio)
             self.lab.set_edificio(edifcio)
+            self.tipoEspacio = 2
 
     def set_parametro(self,x):
         self.parametro =x;
@@ -60,44 +63,70 @@ class AsignacionClase:
         self.tiemposalida = datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
 
     def crearasignacion(self):
+        result= []
         flagsalon = True
-        self.cur.execute("SELECT nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
-        for (nombreEspacio, horaEntrada, horaSalida) in self.cur:
-            if self.salon.get_nombre() == nombreEspacio and (
-                    horaEntrada <= self.tiempoentrada <= horaSalida or horaEntrada <= self.tiemposalida <= horaSalida):
-                flagsalon = False
-        if flagsalon:
-            self.cur.execute(
-                "INSERT INTO Asignacion (nombreMateria, nombreEspacio, profesor, edificio, horaEntrada, horaSalida,TipoEspacio) VALUES (?,?,?,?,?,?,?)",
-                (self.materia.get_nombreMateria(), self.salon.get_nombre(), self.materia.get_profesor(),
-                 self.salon.get_edificio(), self.tiempoentrada, self.tiemposalida, self.tipoEspacio))
-            self.conn.commit()
-            print("La asignacion ha sido realizada con los siguientes parametros: \n" +
-                  "Salon: " + self.salon.get_nombre() + "\n" +
-                  "Materia: " + self.materia.get_nombreMateria() + "\n" +
-                  "Hora Entrada: " + self.get_horaentrada() + "\n" +
-                  "Hora Salida: " + self.get_horasalida())
-        else:
-            print("AsignacionTmp fallida")
-
-    def eliminarasignacionmateria(self, parametro, seleccion):
-        self.cur.execute("SELECT nombreMateria,nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
-        for (nombreMateria, nombreEspacio, horaEntrada, horaSalida) in self.cur:
-            print(str(nombreMateria) + " " + str(nombreEspacio) + " ")
-            if seleccion == 1:
-                if parametro == nombreMateria:
-                    # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
-                    self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
-                    self.conn.commit()
-                    break
-            elif seleccion == 2:
-                if parametro == nombreMateria:
-                    # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
-                    self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
-                    self.conn.commit()
-                    break
+        if self.tiemposalida <= self.tiempoentrada or self.tiempoentrada >= self.tiemposalida:
+            return result
+        if self.tipoEspacio == 1:
+            self.cur.execute("SELECT nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
+            for (nombreEspacio, horaEntrada, horaSalida) in self.cur:
+                if self.salon.get_nombre() == nombreEspacio and (
+                        horaEntrada <= self.tiempoentrada <= horaSalida or horaEntrada <= self.tiemposalida <= horaSalida):
+                    flagsalon = False
+            if flagsalon:
+                self.cur.execute(
+                    "INSERT INTO Asignacion (nombreMateria, nombreEspacio, profesor, edificio, horaEntrada, horaSalida,TipoEspacio) VALUES (?,?,?,?,?,?,?)",
+                    (self.materia.get_nombreMateria(), self.salon.get_nombre(), self.materia.get_profesor(),
+                     self.salon.get_edificio(), self.tiempoentrada, self.tiemposalida, self.tipoEspacio))
+                self.conn.commit()
+                result.append(("La asignacion ha sido realizada con los siguientes parametros: \n" +
+                      "Salon: " + self.salon.get_nombre() + "\n" +
+                      "Materia: " + self.materia.get_nombreMateria() + "\n" +
+                      "Hora Entrada: " + self.get_horaentrada() + "\n" +
+                      "Hora Salida: " + self.get_horasalida()))
+                return result
             else:
-                break
+                return 'Fallo'
+        else:
+            self.cur.execute("SELECT nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
+            for (nombreEspacio, horaEntrada, horaSalida) in self.cur:
+                if self.lab.get_nombre() == nombreEspacio and (
+                        horaEntrada <= self.tiempoentrada <= horaSalida or horaEntrada <= self.tiemposalida <= horaSalida):
+                    return result
+            if flagsalon:
+                self.cur.execute(
+                    "INSERT INTO Asignacion (nombreMateria, nombreEspacio, profesor, edificio, horaEntrada, horaSalida,TipoEspacio) VALUES (?,?,?,?,?,?,?)",
+                    (self.materia.get_nombreMateria(), self.lab.get_nombre(), self.materia.get_profesor(),
+                     self.lab.get_edificio(), self.tiempoentrada, self.tiemposalida, self.tipoEspacio))
+                self.conn.commit()
+                result.append(("La asignacion ha sido realizada con los siguientes parametros: \n" +
+                               "Salon: " + self.lab.get_nombre() + "\n" +
+                               "Materia: " + self.materia.get_nombreMateria() + "\n" +
+                               "Hora Entrada: " + self.get_horaentrada() + "\n" +
+                               "Hora Salida: " + self.get_horasalida()))
+                return result
+            else:
+                return result
+
+
+    # def eliminarasignacionmateria(self, parametro, seleccion):
+    #     self.cur.execute("SELECT nombreMateria,nombreEspacio,horaEntrada,horaSalida FROM Asignacion")
+    #     for (nombreMateria, nombreEspacio, horaEntrada, horaSalida) in self.cur:
+    #         print(str(nombreMateria) + " " + str(nombreEspacio) + " ")
+    #         if seleccion == 1:
+    #             if parametro == nombreMateria:
+    #                 # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
+    #                 self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
+    #                 self.conn.commit()
+    #                 return  True
+    #         elif seleccion == 2:
+    #             if parametro == nombreMateria:
+    #                 # self.cur.execute("SELECT nombreMateria FROM AsignacionTmp")
+    #                 self.cur.execute("DELETE FROM Asignacion WHERE  nombreMateria=?", (parametro,))
+    #                 self.conn.commit()
+    #                 return True
+    #         else:
+    #             return False
 
     def verasignacion(self,columna):
         text = None
@@ -120,6 +149,8 @@ class AsignacionClase:
             else:
                 resultfinal.append("Busqueda no exitosa")
         return resultfinal
+
+
 
 
 

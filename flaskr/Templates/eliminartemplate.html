@@ -1,0 +1,41 @@
+{%extends "layout.html"%}
+
+{% block head %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}" />
+{%endblock%}
+
+{% block content %}
+
+{%with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times</span>
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<h1>Eliminar asignacion</h1>
+ 
+{% if resultend != None %}
+            {%for r in resultend%}
+                <li>{{r}}</li>
+            {%endfor%}
+{% endif %}
+
+<div class="eliminarasignacion">
+    <p>Ingrese el codigo de la asignacion a eliminar</p>
+    <p>Esta accion no se podrá devolver</p>
+    <input type="number" id="codigo" name="codigo" required>
+    <input type="submit" value="Eliminar" enctype="multipart/form-data">
+</div>
+
+<button>
+    <a href="{{url_for('adminview.__versaignacion')}}">
+        Volver
+    </a>
+</button>
+
+{% endblock %}

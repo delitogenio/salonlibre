@@ -2,10 +2,25 @@
 
 {% block head %}
 <meta charset="utf-8" />
-<title>FileDataExtraction</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}" />
 {%endblock%}
 
 {% block content %}
+<div>
+    <h1> Ingrese el valor a buscar</h1>
+    <input type="text" name="valor" id="valor">
+    <input type="submit" value="Buscar" enctype="multipart/form-data">
+    <select name="seleccion" id="seleccion">
+        <option value=1>Modificar</option>
+        <option value=2>Eliminar</option>
+    </select>
+</div>
+<button>
+    <a href="{{url_for('adminview.__crearAsignacion')}}">
+        Crear
+    </a>
+</button>
+
+
 
 {% endblock %}

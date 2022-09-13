@@ -25,7 +25,7 @@ class Login:
                 if Usuario == self.nombreUsuario and check_password_hash(Contrasena, self.contrasena):
                     self.tipo_usuario = Tipo_de_Usuario
                     if self.tipo_usuario == 1:
-                        return 'admintemplate.html'
+                        return '/administrativo'
                     elif self.tipo_usuario == 2:
                         return '/estudiante'
                     elif self.tipo_usuario == 3:
@@ -66,8 +66,7 @@ class Login:
         cur.execute("SELECT Usuario,Contrasena FROM Usuarios")
         for Usuario, Contrasena in cur:
             if Usuario == self.nombreUsuario:
-                flag = False
-                flash('El usuario ya esta creado', 'error')
+                session['error_usuario_creado'] = 'El usuario ya esta creado en el sistema'
                 return False
         if flag:
             password_encripted = generate_password_hash(self.contrasena)
@@ -79,6 +78,7 @@ class Login:
                 (self.nombreUsuario, password_encripted, self.tipo_usuario,
                  rta1_encrypted, rta2_encrypted, rta3_encrypted))
             conn.commit()
+            session['error_usuario_creado'] = None
             flash('Usuario creado correctamente', 'message')
             return True
 
@@ -89,11 +89,17 @@ class Login:
         else:
             login = Login()
             bol = login.create_login()
-            if bol:
+            message = session.get('error_usuario_creado')
+            if bol and message == None:
                 return redirect('/login')
+            elif message  == 'El usuario ya esta creado en el sistema':
+                flash('El usuario ya esta creado en el sistema', 'error')
+                session['error_usuario_creado'] = None
+                return redirect('/login/createlogin')
             else:
-                flash('El correo no se encuentra en la base de datos, comuniquese con registro', 'error')
-                return redirect('login/createlogin')
+                flash('El correo no se encuentra en la base de datos','error')
+                return redirect('/login/createlogin')
+
     def reset_password_initial(self):
         nombreUsuario = request.form["usuario"]
         session['usuario'] = nombreUsuario

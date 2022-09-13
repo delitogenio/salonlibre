@@ -2,13 +2,14 @@ from flask import Flask, request, render_template, redirect
 import os
 import logging, logging.config
 
+from Clases.Usuarios.Administrativo import Administrativo
 from Clases.Usuarios.Estudiante import Estudiante
 from Metodos.Login import Login
 
 logging.basicConfig(level=logging.DEBUG,
                     format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
                     handlers=[
-                        logging.FileHandler('extractdata.log'),
+                        logging.FileHandler('libreaulas.log'),
                         logging.StreamHandler()
                     ])
 
@@ -38,6 +39,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(Login.bplogin)
     app.register_blueprint(Estudiante.bpestudiante)
+    app.register_blueprint(Administrativo.bpadmin)
     if __name__ == "__main__":
         app.run(debug=True)
 

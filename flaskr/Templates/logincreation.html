@@ -2,11 +2,20 @@
 
 {% block head %}
 <meta charset="utf-8" />
-<title>FileDataExtraction</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}" />
 {%endblock%}
 
 {% block content %}
+{%with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times</span>
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 <h1>Ingrese los datos</h1>
 <div class="datoslogin">
     <label for="user" >Usuario</label>

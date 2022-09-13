@@ -1,0 +1,77 @@
+{%extends "layout.html"%}
+
+{% block head %}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}" />
+{%endblock%}
+
+{% block content %}
+
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+{% for error in errors %}
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times</span>
+    {{error}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% with messagegreen = get_flashed_messages(category_filter=["message"]) %}
+{% if messagegreen %}
+{% for msg in messagegreen %}
+<div class="message">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times</span>
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>Creacion de asignaciones</h1>
+<div class="form_create_Asignacion">
+    <ul>
+        <li>
+            <label for="materia">Ingrese la materia</label>
+            <input type="text" name="materia" id="materia" required>
+        </li>
+        <li>
+            <label for="profesor">Ingrese el profesor</label>
+            <input type="text" name="profesor" id="profesor" required>
+        </li>
+        <li>
+            <label for="edificio">Ingrese el edificio</label>
+            <input type="text" name="edificio" id="edificio" required>
+        </li>
+        <li>
+            <label for="espacio">Ingrese el espacio</label>
+            <input type="text" name="espacio" id="espacio" required>
+        </li>
+        <li>
+            <label for="tiempoentrada">Ingrese la fecha de entrada</label>
+            <input type="datetime-local" name="tiempoentrada" id="tiempoentrada" required>
+        </li>
+        <li>
+            <label for="tiemposalida">Ingrese la fecha de salida</label>
+            <input type="datetime-local" name="tiemposalida" id="tiemposalida" required>
+        </li>
+        <li>
+            <label for="tipoespacio">Ingrese tipo de espacio</label>
+            <select name="tipoespacio" id="tipoespacio">
+                <option value="2">Laboratorio</option>
+                <option value="1">Salon de clase</option>
+            </select>
+        </li>
+    </ul>
+    <input type="submit" value="Crear">
+
+</div>
+<button>
+    <a href="{{url_for('adminview.__versaignacion')}}">
+        Volver
+    </a>
+</button>
+
+
+{% endblock %}

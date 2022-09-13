@@ -3,7 +3,6 @@ import abc
 
 
 class CrearAsignacion(abc.ABC):
-
     @abc.abstractmethod
     def crearasignacion(self, nombremateria, profesor, edifcio, nombreespacio, tiempoentrada,
                         tiemposalida, tipoespacio):
@@ -12,7 +11,7 @@ class CrearAsignacion(abc.ABC):
 class EliminarAsignacion(abc.ABC):
 
     @abc.abstractmethod
-    def eliminarasignacion(self):
+    def eliminarasignacion(self,codigo):
         pass
 
 
@@ -28,9 +27,6 @@ class VerAsignacion(abc.ABC):
     def verasignacion(self,parametro):
         pass
 
-class SolicitarAsignacion(abc.ABC):
-    @abc.abstractmethod
-    def solicitarasignacion(self):
-        pass
+
 
 
